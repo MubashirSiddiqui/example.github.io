@@ -1,4 +1,23 @@
 [
-    { "title": "Item 1", "description": "This is the first item description." },
-    { "title": "Item 2", "description": "This is the second item description." }
+    
+        {
+            "premium": true,
+            "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Autodesk_logo.svg/512px-Autodesk_logo.svg.png",
+            "title": "Digital Marketing Manager",
+            "company": "Autodesk",
+            "salary": "750 - 800",
+            "type": "Full Time",
+            "location": "QBL Park, C40"
+        },
+        {
+            "premium": false,
+            "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg",
+            "title": "Software Engineer",
+            "company": "Nike",
+            "salary": "900 - 1200",
+            "type": "Part Time",
+            "location": "Downtown, NY"
+        }
+    
+    
 ]
