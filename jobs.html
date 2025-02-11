@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings CRUD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .form-container, .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        input, button {
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .toggle {
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .actions button {
+            cursor: pointer;
+            padding: 5px 10px;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add/Edit Job</h2>
+        <label>Premium: <input type="checkbox" id="premium" class="toggle"></label>
+        <input type="text" id="logo" placeholder="Logo URL">
+        <input type="text" id="title" placeholder="Job Title">
+        <input type="text" id="company" placeholder="Company">
+        <input type="text" id="salary" placeholder="Salary">
+        <input type="text" id="type" placeholder="Type">
+        <input type="text" id="location" placeholder="Location">
+        <button onclick="addJob()">Add/Update Job</button>
+    </div>
+
+    <div class="table-container">
+        <h2>Job Listings</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Premium</th>
+                    <th>Logo</th>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Salary</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="jobTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let jobs = [];
+
+        function loadJobs() {
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    jobs = data;
+                    renderTable();
+                })
+                .catch(error => console.error('Error loading jobs:', error));
+        }
+
+        function renderTable() {
+            const table = document.getElementById("jobTable");
+            table.innerHTML = "";
+            jobs.forEach((job, index) => {
+                table.innerHTML += `
+                    <tr>
+                        <td>${job.premium ? 'Yes' : 'No'}</td>
+                        <td><img src="${job.logo}" width="50"></td>
+                        <td>${job.title}</td>
+                        <td>${job.company}</td>
+                        <td>${job.salary}</td>
+                        <td>${job.type}</td>
+                        <td>${job.location}</td>
+                        <td class="actions">
+                            <button onclick="editJob(${index})">Edit</button>
+                            <button onclick="deleteJob(${index})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addJob() {
+            const premium = document.getElementById("premium").checked;
+            const logo = document.getElementById("logo").value;
+            const title = document.getElementById("title").value;
+            const company = document.getElementById("company").value;
+            const salary = document.getElementById("salary").value;
+            const type = document.getElementById("type").value;
+            const location = document.getElementById("location").value;
+            
+            jobs.push({ premium, logo, title, company, salary, type, location });
+            renderTable();
+        }
+
+        function editJob(index) {
+            const job = jobs[index];
+            document.getElementById("premium").checked = job.premium;
+            document.getElementById("logo").value = job.logo;
+            document.getElementById("title").value = job.title;
+            document.getElementById("company").value = job.company;
+            document.getElementById("salary").value = job.salary;
+            document.getElementById("type").value = job.type;
+            document.getElementById("location").value = job.location;
+            
+            jobs.splice(index, 1);
+            renderTable();
+        }
+
+        function deleteJob(index) {
+            jobs.splice(index, 1);
+            renderTable();
+        }
+
+        loadJobs();
+    </script>
+</body>
+</html>
