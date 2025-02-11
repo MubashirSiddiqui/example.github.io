@@ -3,48 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display JSON Data</title>
+    <title>Job Listing</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             background-color: #f4f4f4;
+            margin: 20px;
         }
-        .container {
+        .job-card {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .card {
+            align-items: center;
             background: white;
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 250px;
+            margin-bottom: 20px;
+            position: relative;
         }
-        .card h3 {
-            margin: 0 0 10px;
+        .premium-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px 0 5px 0;
+        }
+        .job-logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+        .job-info {
+            flex-grow: 1;
+        }
+        .job-title {
             font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .job-details {
+            font-size: 14px;
+            color: gray;
+        }
+        .location {
+            display: flex;
+            align-items: center;
+            color: #333;
+        }
+        .apply-btn {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <h1>Data from JSON</h1>
-    <div class="container" id="data-container"></div>
-    
+    <div id="job-container"></div>
+
     <script>
         fetch('data.json')
             .then(response => response.json())
             .then(data => {
-                const container = document.getElementById('data-container');
-                data.forEach(item => {
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-                    card.innerHTML = `
-                        <h3>${item.title}</h3>
-                        <p>${item.description}</p>
+                const container = document.getElementById('job-container');
+                data.forEach(job => {
+                    const jobCard = document.createElement('div');
+                    jobCard.classList.add('job-card');
+                    jobCard.innerHTML = `
+                        <div class="premium-badge">${job.premium ? 'PREMIUM' : ''}</div>
+                        <img src="${job.logo}" alt="${job.company}" class="job-logo">
+                        <div class="job-info">
+                            <p class="job-title">${job.title}</p>
+                            <p class="job-details">${job.company} - $${job.salary} - <span style="background:#e5f9e5; padding:2px 5px; border-radius:3px;">${job.type}</span></p>
+                            <p class="location">📍 ${job.location}</p>
+                        </div>
+                        <button class="apply-btn">Apply Now</button>
                     `;
-                    container.appendChild(card);
+                    container.appendChild(jobCard);
                 });
             })
             .catch(error => console.error('Error fetching data:', error));
