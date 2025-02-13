@@ -39,15 +39,20 @@
     document.getElementById('companyName').textContent = jobData.company;
     document.getElementById('location').textContent = `Location: ${jobData.location}`;
     document.getElementById('jobDescription').textContent = jobData.jd;
+    document.getElementById('requirement').textContent = jobData.requirement;
     document.getElementById('experience').textContent = `Experience: ${jobData.experience}`;
         }
     </script>
 
 <img id="companyLogo" src="" alt="Company Logo" style="width: 50px; height: 50px;">
+<h3>Job Title</h3>
 <h2 id="jobTitle"></h2>
+<h3>Company</h3>
 <h3 id="companyName"></h3>
+<h3>Location</h3>
 <p id="location"></p>
 <p id="jobDescription"></p>
-<p id="experience"></p>
+<p id="requirement"></p>
+    <p id="experience"></p>
 </body>
 </html>
