@@ -34,16 +34,20 @@
             });
 
         function displayJobDetails(jobData) {
-            const jobDetailsContainer = document.getElementById('jobDetails');
-            jobDetailsContainer.innerHTML = `
-                <img src="${jobData.logo}" alt="Company Logo" style="width: 50px; height: 50px;">
-                <h2>${jobData.title}</h2>
-                <h3>${jobData.company}</h3>
-                <p>Salary: ${jobData.salary}</p>
-                <p>Type: ${jobData.type}</p>
-                <p>Location: ${jobData.location}</p>
-            `;
+            document.getElementById('companyLogo').src = jobData.logo;
+    document.getElementById('jobTitle').textContent = jobData.title;
+    document.getElementById('companyName').textContent = jobData.company;
+    document.getElementById('location').textContent = `Location: ${jobData.location}`;
+    document.getElementById('jobDescription').textContent = jobData.jd;
+    document.getElementById('experience').textContent = `Experience: ${jobData.experience}`;
         }
     </script>
+
+<img id="companyLogo" src="" alt="Company Logo" style="width: 50px; height: 50px;">
+<h2 id="jobTitle"></h2>
+<h3 id="companyName"></h3>
+<p id="location"></p>
+<p id="jobDescription"></p>
+<p id="experience"></p>
 </body>
 </html>
