@@ -30,46 +30,29 @@
     <script>
         // Fetch the data.xlsx file from the same folder
         fetch('data.xlsx')
-            .then(response => response.arrayBuffer())
-            .then(data => {
-                const workbook = XLSX.read(data, { type: 'array' });
+    .then(response => response.arrayBuffer())
+    .then(data => {
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+        
+        if (jsonData.length > 0) {
+            displayJobDetails(jsonData[0]);
+        } else {
+            console.error("No job data found in the Excel file.");
+        }
+    })
+    .catch(error => console.error('Error loading Excel file:', error));
 
-                // Assuming the data is in the first sheet
-                const sheet = workbook.Sheets[workbook.SheetNames[0]];
-
-                // Convert sheet data to JSON format
-                const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-                // Extract the first (and only) row from JSON data
-                const jobData = jsonData[0];
-
-                // Display the job data
-                displayJobDetails(jobData);
-            })
-            .catch(error => {
-                console.error('Error reading Excel file:', error);
-            });
-            function displayJobDetails(jobData) {
-                document.getElementById('companyLogo').src = jobData.logo;
-                document.getElementById('jobTitle').textContent = jobData.title;
-                document.getElementById('companyName').textContent = jobData.company;
-                document.getElementById('location').textContent = `Location: ${jobData.location}`;
-                document.getElementById('jobDescription').textContent = jobData.jd;
-                document.getElementById('requirement').textContent = jobData.requirement;
-                document.getElementById('experience').textContent = `Experience: ${jobData.experience}`;
+function displayJobDetails(jobData) {
+    document.getElementById('companyLogo').src = jobData.logo || 'https://via.placeholder.com/50';
+    document.getElementById('jobTitle').textContent = jobData.title || "No Title Available";
+    document.getElementById('companyName').textContent = jobData.company || "Unknown Company";
+    document.getElementById('location').textContent = `Location: ${jobData.location || "N/A"}`;
+    document.getElementById('jobDescription').textContent = jobData.jd || "No Job Description";
+    document.getElementById('requirement').textContent = jobData.requirement || "No Requirements Listed";
+    document.getElementById('experience').textContent = `Experience: ${jobData.experience || "Not Specified"}`;
 }
-const jobData = {
-            logo: "https://via.placeholder.com/50",
-            title: "Digital Marketer",
-            company: "Tech Solutions Inc.",
-            location: "New York, USA",
-            jd: "Responsible for online marketing and branding.",
-            experience: "3+ years in digital marketing"
-        };
-
-        window.onload = function() {
-            displayJobDetails(jobData);
-        };
     </script>
     <!-- Preloader Start -->
     <div id="preloader-active">
