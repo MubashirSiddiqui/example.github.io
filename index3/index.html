@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details</title>
+</head>
+<body>
+    <div id="jobDetails"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
+
+    <script>
+        // Fetch the data.xlsx file from the same folder
+        fetch('data.xlsx')
+            .then(response => response.arrayBuffer())
+            .then(data => {
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                // Assuming the data is in the first sheet
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+                // Convert sheet data to JSON format
+                const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+                // Extract the first (and only) row from JSON data
+                const jobData = jsonData[0];
+
+                // Display the job data
+                displayJobDetails(jobData);
+            })
+            .catch(error => {
+                console.error('Error reading Excel file:', error);
+            });
+
+        function displayJobDetails(jobData) {
+            const jobDetailsContainer = document.getElementById('jobDetails');
+            jobDetailsContainer.innerHTML = `
+                <img src="${jobData.logo}" alt="Company Logo" style="width: 50px; height: 50px;">
+                <h2>${jobData.title}</h2>
+                <h3>${jobData.company}</h3>
+                <p>Salary: ${jobData.salary}</p>
+                <p>Type: ${jobData.type}</p>
+                <p>Location: ${jobData.location}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
